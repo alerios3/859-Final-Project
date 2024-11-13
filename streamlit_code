@@ -1,0 +1,22 @@
+#install packages
+!pip install pandas geopandas folium
+
+#import pandas
+import pandas as pd
+
+# Load dolphin database
+df = pd.read_csv('dolphindb.csv')
+df.head()
+
+#convert dataframe into a geodata frame
+import geopandas as gpd
+from shapely.geometry import Point
+
+# Create a geometry column from latitude and longitude
+geometry = [Point(xy) for xy in zip(df['longitude'], df['latitude'])]
+gdf = gpd.GeoDataFrame(df, geometry=geometry)
+
+# Set the coordinate reference system (CRS) to WGS84 (common for latitude/longitude data)
+gdf.set_crs(epsg=4326, inplace=True)
+gdf.head()
+
